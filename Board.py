@@ -8,7 +8,7 @@ def clearBoard() :
     board = [[0 for j in range(BOARD_COLUMS)] for i in range (BOARD_ROWS)]
 
 def canPlay(columnIndex) :
-    return not board[0][columnIndex]
+    return columnIndex >= 0 and columnIndex < BOARD_COLUMS and not board[0][columnIndex]
 
 def play(isRed, columnIndex) :
     if canPlay(columnIndex) :
@@ -25,18 +25,6 @@ def nextPlayer() :
     global CURRENT_IS_RED
     CURRENT_IS_RED = not CURRENT_IS_RED
     return CURRENT_IS_RED
-
-def ConsoleGame() :
-    for i in range(BOARD_COLUMS) :
-        print(i, end=' ')
-    print()
-    print()
-    for row in board :
-        for elmt in row :
-            print(elmt, end=' ')
-        print()
-    print()
-    print()
 
 def getBoardStatus() :
     won = False
