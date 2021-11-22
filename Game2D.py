@@ -5,6 +5,16 @@ import Board
 COLUMNS_WIDTH = 50
 SPAN = 5
 
+def getPlayerColor():
+    if Board.CURRENT_IS_RED:
+        return 'red'
+    else :
+        return 'yellow'
+
+def checkEnd() :
+    if Board.getBoardStatus() != "ON_PROGRESS" :
+        canvas.itemconfig(text_player, text=Board.getBoardStatus())
+
 def clickOnColumn(event) :
     print("clicked at", event.x, event.y)
     row = event.y // COLUMNS_WIDTH
@@ -12,12 +22,12 @@ def clickOnColumn(event) :
     print("correpond to", row, columClicked)
     if Board.canPlay(columClicked) :
         rowPlayed, columnPlayed = Board.play(Board.CURRENT_IS_RED, columClicked)
-        if Board.CURRENT_IS_RED:
-            playerColor = 'red'
-        else :
-            playerColor = 'yellow'
+        playerColor = getPlayerColor()
         canvas.itemconfig(ovals[rowPlayed][columnPlayed], fill=playerColor)
         Board.nextPlayer()
+        playerColor = getPlayerColor()
+        canvas.itemconfig(text_player, text=playerColor)
+        checkEnd()
 
 root = tk.Tk()
 root.geometry("600x200")
@@ -32,6 +42,8 @@ ovals = [[canvas.create_oval(j*COLUMNS_WIDTH + SPAN, i*COLUMNS_WIDTH + SPAN, (j+
 #     for j, elmt in enumerate(row) :
 #         canvas.create_oval(j*COLUMNS_WIDTH + SPAN, i*COLUMNS_WIDTH + SPAN, (j+1)*COLUMNS_WIDTH - SPAN, (i+1)*COLUMNS_WIDTH - SPAN, fill="white")
 
+playerColor = getPlayerColor()
+text_player = canvas.create_text(Board.BOARD_COLUMS*COLUMNS_WIDTH + 100, 50, text=playerColor)
 
 canvas.tag_bind('board', '<Button-1>', clickOnColumn)
 
